@@ -11,8 +11,8 @@
       {{ range .Category}}
       <li>
         {{.Name}}
-        <a href="/categories/edit/{{.ID}}">Edit</a>
-        <a href="/categories/delete/{{.ID}}">Delete</a>
+        <a href="/categories/{{.ID}}/edit">Edit</a>
+        <a href="/categories/{{.ID}}/delete">Delete</a>
       </li>
       {{ end }}
   </ul>

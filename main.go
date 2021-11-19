@@ -25,17 +25,11 @@ func main(){
 
 	db.MustExec(schema)
 
-	h:=handler.New(db)
+	r:=handler.New(db)
 
- http.HandleFunc("/", h.Home)
- http.HandleFunc("/categories/create", h.CreateCategory)
- http.HandleFunc("/categories/store", h.StoreCategory)
- http.HandleFunc("/categories/edit/", h.EditCategory)
- http.HandleFunc("/categories/update/", h.UpdateCategory)
- http.HandleFunc("/categories/delete/", h.DeleteCategory)
  log.Println("Server starting ...........")
 
- if err := http.ListenAndServe("127.0.0.1:3000",nil); err !=nil{
+ if err := http.ListenAndServe("127.0.0.1:3000",r); err !=nil{
 	log.Fatal(err)
   }
 

@@ -2,6 +2,8 @@ package handler
 
 import (
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 type formData struct{
@@ -14,13 +16,13 @@ type Category struct {
     Name string `db:"name" json:"name"`
 }
 
-func (h *Handler) CreateCategory (rw http.ResponseWriter, r *http.Request) {
+func (h *Handler) createCategory (rw http.ResponseWriter, r *http.Request) {
 	Errors := map[string]string{}
 	category := Category{}
 	h.loadCreatedCategoryForm(rw,category,Errors)
 }
 
-func (h *Handler) StoreCategory (rw http.ResponseWriter, r *http.Request) {
+func (h *Handler) storeCategory (rw http.ResponseWriter, r *http.Request) {
 
 		if err:=r.ParseForm(); err != nil{
 			http.Error(rw, err.Error(), http.StatusInternalServerError)
@@ -63,9 +65,9 @@ func (h *Handler) StoreCategory (rw http.ResponseWriter, r *http.Request) {
 	http.Redirect(rw,r,"/", http.StatusTemporaryRedirect)
 }
 
-func (h *Handler) EditCategory(rw http.ResponseWriter, r *http.Request) {
-	id := r.URL.Path[len("/categories/edit/"):]
-
+func (h *Handler) editCategory(rw http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
 	if id == "" {
 		http.Error(rw, "invalid ", http.StatusTemporaryRedirect)
 		return
@@ -83,8 +85,9 @@ func (h *Handler) EditCategory(rw http.ResponseWriter, r *http.Request) {
 
 }
 
-func (h *Handler) UpdateCategory(rw http.ResponseWriter, r *http.Request) {
-	id := r.URL.Path[len("/categories/update/"):]
+func (h *Handler) updateCategory(rw http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
 
 	if id == "" {
 		http.Error(rw, "invalid update", http.StatusTemporaryRedirect)
@@ -135,10 +138,10 @@ func (h *Handler) UpdateCategory(rw http.ResponseWriter, r *http.Request) {
 	http.Redirect(rw,r, "/", http.StatusTemporaryRedirect)
 }
 
-func (h *Handler) DeleteCategory(rw http.ResponseWriter, r *http.Request) {
+func (h *Handler) deleteCategory(rw http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
 	
-	id := r.URL.Path[len("/categories/delete/"):]
-
 	if id == "" {
 		http.Error(rw, "invalid update", http.StatusTemporaryRedirect)
 		return
